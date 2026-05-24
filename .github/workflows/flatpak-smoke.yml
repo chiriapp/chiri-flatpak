@@ -1,0 +1,85 @@
+name: Flatpak smoke
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flatpak-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flatpak:
+    name: Build ${{ matrix.variant.arch }} bundle
+    runs-on: ${{ matrix.variant.runner }}
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        variant:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    env:
+      FLATPAK_ID: garden.chiri.Chiri
+      FLATPAK_ARCH: ${{ matrix.variant.arch }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check packaging metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f "${FLATPAK_ID}.yml"
+          test -f "${FLATPAK_ID}.desktop"
+          test -f "${FLATPAK_ID}.metainfo.xml"
+
+          grep -q "^id: ${FLATPAK_ID}$" "${FLATPAK_ID}.yml"
+          grep -q "^command: ${FLATPAK_ID}$" "${FLATPAK_ID}.yml"
+          grep -q "^Exec=${FLATPAK_ID}$" "${FLATPAK_ID}.desktop"
+          grep -q "^Icon=${FLATPAK_ID}$" "${FLATPAK_ID}.desktop"
+          grep -q "<id>${FLATPAK_ID}</id>" "${FLATPAK_ID}.metainfo.xml"
+
+          desktop-file-validate "${FLATPAK_ID}.desktop"
+          appstreamcli validate --no-net "${FLATPAK_ID}.metainfo.xml"
+
+      - name: Build Flatpak bundle
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: garden.chiri.Chiri-${{ matrix.variant.arch }}.flatpak
+          manifest-path: garden.chiri.Chiri.yml
+          branch: stable
+          cache-key: flatpak-builder-${{ matrix.variant.arch }}-${{ github.sha }}
+          arch: ${{ matrix.variant.arch }}
+          verbose: true
+
+      - name: Inspect installed bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -s "${FLATPAK_ID}-${FLATPAK_ARCH}.flatpak"
+          flatpak --user install --noninteractive --assumeyes "${FLATPAK_ID}-${FLATPAK_ARCH}.flatpak"
+          flatpak --user info "${FLATPAK_ID}"
+          flatpak --user info --show-permissions "${FLATPAK_ID}"
+          flatpak --user run --command=sh "${FLATPAK_ID}" -lc '
+            set -eu
+            test -x /app/bin/garden.chiri.Chiri
+            test -f /app/share/applications/garden.chiri.Chiri.desktop
+            test -f /app/share/metainfo/garden.chiri.Chiri.metainfo.xml
+            test -f /app/share/icons/hicolor/128x128/apps/garden.chiri.Chiri.png
+            ldd /app/bin/garden.chiri.Chiri | tee /tmp/chiri-flatpak-ldd.txt
+            ! grep -q "not found" /tmp/chiri-flatpak-ldd.txt
+          '

@@ -68,16 +68,15 @@
   <content_rating type="oars-1.1" />
 
   <releases>
-    <release version="0.7.1" date="2025-03-13">
+    <release version="0.8.1" date="2026-04-12">
       <description>
-        <p>Current alpha release with CalDAV sync support and task management features.</p>
+        <p>Alpha release with CalDAV sync support and task management features.</p>
       </description>
     </release>
   </releases>
 
   <branding>
     <color type="primary" scheme_preference="light">#F5C2E7</color>
-    <color type="primary" scheme_preference="dark">#CBA6F7A</color>
-    <color type="primary" scheme_preference="dark">#3B82F6</color>
+    <color type="primary" scheme_preference="dark">#CBA6F7</color>
   </branding>
 </component>
