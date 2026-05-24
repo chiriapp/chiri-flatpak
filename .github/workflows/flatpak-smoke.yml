@@ -63,9 +63,9 @@ jobs:
           bundle: garden.chiri.Chiri-${{ matrix.variant.arch }}.flatpak
           manifest-path: garden.chiri.Chiri.yml
           branch: stable
-          cache-key: flatpak-builder-${{ matrix.variant.arch }}-${{ github.sha }}
           arch: ${{ matrix.variant.arch }}
           verbose: true
+          upload-artifact: false
 
       - name: Inspect installed bundle
         shell: bash
