@@ -1,0 +1,4 @@
+*.desktop linguist-detectable
+*.flatpakref linguist-detectable
+*.xml linguist-detectable
+*.yml linguist-detectable
