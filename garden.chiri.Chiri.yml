@@ -1,8 +1,8 @@
-id: moe.sapphic.Chiri
+id: garden.chiri.Chiri
 runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk
-command: moe.sapphic.Chiri
+command: garden.chiri.Chiri
 
 finish-args:
   # Display
@@ -43,11 +43,11 @@ modules:
     sources:
       # Metainfo file
       - type: file
-        path: moe.sapphic.Chiri.metainfo.xml
+        path: garden.chiri.Chiri.metainfo.xml
 
       # Desktop file
       - type: file
-        path: moe.sapphic.Chiri.desktop
+        path: garden.chiri.Chiri.desktop
 
       # x86_64 .deb package
       - type: file
@@ -87,8 +87,8 @@ modules:
 
       # Install the binary named after the Flatpak app ID. Tauri appears to derive the GtkApplication ID
       # (and thus the Wayland xdg_toplevel app_id) from the binary name rather than the tauri.conf.json
-      # identifier. Naming it moe.sapphic.Chiri makes KWin find the correct moe.sapphic.Chiri.desktop entry for the title bar icon.
-      - install -Dm755 deb-extract/usr/bin/Chiri /app/bin/moe.sapphic.Chiri
+      # identifier. Naming it garden.chiri.Chiri makes KWin find the correct garden.chiri.Chiri.desktop entry for the title bar icon.
+      - install -Dm755 deb-extract/usr/bin/Chiri /app/bin/garden.chiri.Chiri
 
       # If there are bundled resources (uncomment if needed)
       # - mkdir -p /app/lib/chiri
@@ -97,16 +97,16 @@ modules:
 
       # Install icons with Flatpak naming (app-id based)
       - install -Dm644 deb-extract/usr/share/icons/hicolor/32x32/apps/Chiri.png
-        /app/share/icons/hicolor/32x32/apps/moe.sapphic.Chiri.png
+        /app/share/icons/hicolor/32x32/apps/garden.chiri.Chiri.png
       - install -Dm644 deb-extract/usr/share/icons/hicolor/128x128/apps/Chiri.png
-        /app/share/icons/hicolor/128x128/apps/moe.sapphic.Chiri.png
+        /app/share/icons/hicolor/128x128/apps/garden.chiri.Chiri.png
       - install -Dm644 deb-extract/usr/share/icons/hicolor/256x256@2/apps/Chiri.png
-        /app/share/icons/hicolor/256x256@2/apps/moe.sapphic.Chiri.png
+        /app/share/icons/hicolor/256x256@2/apps/garden.chiri.Chiri.png
 
       # Install desktop file with icon reference updated
-      - install -Dm644 moe.sapphic.Chiri.desktop
-        /app/share/applications/moe.sapphic.Chiri.desktop
+      - install -Dm644 garden.chiri.Chiri.desktop
+        /app/share/applications/garden.chiri.Chiri.desktop
 
       # Install metainfo for app stores
-      - install -Dm644 moe.sapphic.Chiri.metainfo.xml
-        /app/share/metainfo/moe.sapphic.Chiri.metainfo.xml
+      - install -Dm644 garden.chiri.Chiri.metainfo.xml
+        /app/share/metainfo/garden.chiri.Chiri.metainfo.xml

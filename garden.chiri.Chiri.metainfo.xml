@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>moe.sapphic.Chiri</id>
+  <id>garden.chiri.Chiri</id>
 
   <name>Chiri</name>
   <summary>A cross-platform CalDAV task management app. Currently in very early alpha!</summary>
 
-  <developer id="moe.sapphic">
+  <developer id="garden.chiri">
     <name>Sapphic Angels</name>
   </developer>
 
@@ -56,7 +56,7 @@
     </p>
   </description>
 
-  <launchable type="desktop-id">moe.sapphic.Chiri.desktop</launchable>
+  <launchable type="desktop-id">garden.chiri.Chiri.desktop</launchable>
 
   <screenshots>
     <screenshot type="default">
